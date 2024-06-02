@@ -1,0 +1,20 @@
+{
+  "name": "suicraft",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "suicraft": "./index.js"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "degit": "^2.8.4",
+    "inquirer": "^9.2.23"
+  }
+}
