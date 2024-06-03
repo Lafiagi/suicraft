@@ -68,17 +68,20 @@ const checkAndInstallSui = () => {
   }
 };
 
+const getSmartContractBoilerlate = async () => {
+  // Fetch boilerplate code from Sui foundation repo
+  const repo = degit("github:sui-foundation/sui-move-intro-course/unit-two", {
+    force: true,
+  });
+  await repo.clone("./smart_contract_examples");
+};
 // Function to setup Sui Move project
 const setupSuiMoveProject = async (projectName) => {
   console.log(`Setting up Sui Move project: ${projectName}\n`);
   execSync(`mkdir ${projectName}`);
   process.chdir(projectName);
   execSync(`sui move new ${projectName}`, { stdio: "inherit" });
-  // Fetch boilerplate code from Sui foundation repo
-  const repo = degit("github:sui-foundation/sui-move-intro-course/unit-two", {
-    force: true,
-  });
-  await repo.clone("./examples");
+  await getSmartContractBoilerlate();
 };
 
 const setupProject = (projectName) => {
@@ -101,6 +104,7 @@ const setupFullstackWeb = async (projectName) => {
   execSync(`mkdir ${projectName}_smart_contracts`);
   process.chdir(`${projectName}_smart_contracts`);
   execSync(`sui move new ${projectName}`, { stdio: "inherit" });
+  await getSmartContractBoilerlate();
   console.log("Smart contracts setup complete.\n");
 
   // Move back to the main project folder
@@ -111,8 +115,10 @@ const setupFullstackWeb = async (projectName) => {
   execSync(`npx create-react-app ${projectName}_frontend`, {
     stdio: "inherit",
   });
+  process.chdir(`${projectName}_frontend`);
+
   const repo = degit("dantheman8300/enoki-example-app", { force: true });
-  await repo.clone("./frontend_sample");
+  await repo.clone("./frontend_examples");
   console.log("Frontend setup complete.\n");
 };
 
@@ -126,6 +132,7 @@ const setupFullstackMobile = async (projectName) => {
   execSync(`mkdir ${projectName}_smart_contracts`);
   process.chdir(`${projectName}_smart_contracts`);
   execSync(`sui move new ${projectName}`, { stdio: "inherit" });
+  await getSmartContractBoilerlate();
   console.log("Smart contracts setup complete.\n");
 
   // Move back to the main project folder
@@ -134,6 +141,8 @@ const setupFullstackMobile = async (projectName) => {
   // Setup mobile app using React Native
   console.log("Setting up mobile app...\n");
   execSync(`npx react-native init ${projectName}_mobile`, { stdio: "inherit" });
+  process.chdir(`${projectName}_frontend`);
+
   const repo = degit("dantheman8300/enoki-example-app", { force: true });
   console.log("Fetching mobile integration sample code...\n");
   await repo.clone("./mobile_sample");
@@ -152,37 +161,37 @@ const setupGitAndFiles = (projectName) => {
 };
 
 (async () => {
-    let projectName = process.argv[2];
+  let projectName = process.argv[2];
 
-    if (!projectName) {
-        const response = await inquirer.prompt([
-            {
-                type: "input",
-                name: "projectName",
-                message: "Enter the project name:",
-            },
-        ]);
-        projectName = response.projectName;
-    }
-
-    const { projectType } = await inquirer.prompt([
-        {
-            type: "list",
-            name: "projectType",
-            message: "Select the project type:",
-            choices: ["Sui Smart Contract", "Fullstack Web", "Fullstack Mobile"],
-        },
+  if (!projectName) {
+    const response = await inquirer.prompt([
+      {
+        type: "input",
+        name: "projectName",
+        message: "Enter the project name:",
+      },
     ]);
+    projectName = response.projectName;
+  }
 
-    if (projectType === "Sui Smart Contract") {
-        checkAndInstallSui();
-        await setupSuiMoveProject(projectName);
-    } else if (projectType === "Fullstack Web") {
-        await setupFullstackWeb(projectName);
-    } else if (projectType === "Fullstack Mobile") {
-        await setupFullstackMobile(projectName);
-    }
+  const { projectType } = await inquirer.prompt([
+    {
+      type: "list",
+      name: "projectType",
+      message: "Select the project type:",
+      choices: ["Sui Smart Contract", "Fullstack Web", "Fullstack Mobile"],
+    },
+  ]);
 
-    setupGitAndFiles(projectName);
-    console.log("\nProject setup complete.\n");
+  if (projectType === "Sui Smart Contract") {
+    checkAndInstallSui();
+    await setupSuiMoveProject(projectName);
+  } else if (projectType === "Fullstack Web") {
+    await setupFullstackWeb(projectName);
+  } else if (projectType === "Fullstack Mobile") {
+    await setupFullstackMobile(projectName);
+  }
+
+  setupGitAndFiles(projectName);
+  console.log("\nProject setup complete.\n");
 })();
