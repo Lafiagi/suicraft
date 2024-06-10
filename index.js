@@ -101,8 +101,8 @@ const setupFullstackWeb = async (projectName) => {
 
   // Setup smart contracts
   console.log("Setting up smart contracts...\n");
-  execSync(`mkdir ${projectName}_smart_contracts`);
-  process.chdir(`${projectName}_smart_contracts`);
+  execSync(`mkdir ${projectName}Smart_contracts`);
+  process.chdir(`${projectName}Smart_contracts`);
   execSync(`sui move new ${projectName}`, { stdio: "inherit" });
   await getSmartContractBoilerlate();
   console.log("Smart contracts setup complete.\n");
@@ -112,10 +112,10 @@ const setupFullstackWeb = async (projectName) => {
 
   // Setup frontend
   console.log("Setting up frontend...\n");
-  execSync(`npx create-react-app ${projectName}_frontend`, {
+  execSync(`npx create-react-app ${projectName}Frontend`, {
     stdio: "inherit",
   });
-  process.chdir(`${projectName}_frontend`);
+  process.chdir(`${projectName}Frontend`);
 
   const repo = degit("dantheman8300/enoki-example-app", { force: true });
   await repo.clone("./frontend_examples");
@@ -129,8 +129,8 @@ const setupFullstackMobile = async (projectName) => {
 
   // Setup smart contracts
   console.log("Setting up smart contracts...\n");
-  execSync(`mkdir ${projectName}_smart_contracts`);
-  process.chdir(`${projectName}_smart_contracts`);
+  execSync(`mkdir ${projectName}Smart_contracts`);
+  process.chdir(`${projectName}Smart_contracts`);
   execSync(`sui move new ${projectName}`, { stdio: "inherit" });
   await getSmartContractBoilerlate();
   console.log("Smart contracts setup complete.\n");
@@ -141,7 +141,7 @@ const setupFullstackMobile = async (projectName) => {
   // Setup mobile app using React Native
   console.log("Setting up mobile app...\n");
   execSync(`npx react-native init ${projectName}_mobile`, { stdio: "inherit" });
-  process.chdir(`${projectName}_frontend`);
+  process.chdir(`${projectName}Frontend`);
 
   const repo = degit("dantheman8300/enoki-example-app", { force: true });
   console.log("Fetching mobile integration sample code...\n");
