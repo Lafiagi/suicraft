@@ -115,6 +115,7 @@ const setupFullstackWeb = async (projectName) => {
   execSync(`npx create-react-app ${projectName}_frontend`, {
     stdio: "inherit",
   });
+  execSync(`npm install @mysten/enoki @mysten/sui`, { stdio: "inherit" });
   process.chdir(`${projectName}_frontend`);
 
   const repo = degit("dantheman8300/enoki-example-app", { force: true });
@@ -141,6 +142,9 @@ const setupFullstackMobile = async (projectName) => {
   // Setup mobile app using React Native
   console.log("Setting up mobile app...\n");
   execSync(`npx react-native init ${projectName}_mobile`, { stdio: "inherit" });
+  // npm install @mysten/enoki
+  execSync(`npm install @mysten/enoki @mysten/sui`, { stdio: "inherit" });
+
   process.chdir(`${projectName}_frontend`);
 
   const repo = degit("dantheman8300/enoki-example-app", { force: true });
@@ -171,7 +175,7 @@ const setupGitAndFiles = (projectName) => {
         message: "Enter the project name:",
       },
     ]);
-    projectName = response.projectName;
+    projectName = response.projectName.toLowerCase();
   }
 
   const { projectType } = await inquirer.prompt([
